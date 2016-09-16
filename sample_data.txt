@@ -1,8 +1,8 @@
->Frag_56
+>Rosalind_5610
 ATTAGACCTG
->Frag_57
+>Rosalind_5710
 CCTGCCGGAA
->Frag_58
+>Rosalind_5810
 AGACCTGCCG
->Frag_59
+>Rosalind_5910
 GCCGGAATAC
