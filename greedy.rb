@@ -10,7 +10,7 @@ class Greedy
   def shortest_common_superstring
     merge_best_overlap_until_no_overlaps_remain
     # concatenate unmerged strings if there are any, return superstring
-    reads.join
+    @superstring ||= reads.join
   end
 
   def merge_best_overlap_until_no_overlaps_remain
