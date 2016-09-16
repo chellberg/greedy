@@ -44,4 +44,22 @@ describe Greedy do
       end
     end
   end
+
+  describe '#find_maximum_overlap' do
+    it 'returns the correct reads and the overlap length' do
+      # maximum overlap is barbaz
+      test_reads = %w(
+        foobarbaz
+        barbazbiz
+        bizbopwam
+      )
+
+      @greedy.stub :reads, test_reads do
+        left, right, best_overlap = @greedy.find_maximum_overlap
+        assert_equal 'foobarbaz', left
+        assert_equal 'barbazbiz', right
+        assert_equal 6, best_overlap
+      end
+    end
+  end
 end
