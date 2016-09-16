@@ -80,24 +80,6 @@ describe Greedy do
     end
   end
 
-  describe '#shortest_common_superstring' do
-    it 'returns a valid superstring' do
-      superstring = @greedy.shortest_common_superstring
-      assert_equal 'ATTAGACCTGCCGGAATAC', superstring
-    end
-
-    it 'concatenates unmergable reads' do
-      unmergable_reads = %w(
-        foobar
-        bizbaz
-      )
-
-      stub_reads unmergable_reads do
-        assert_equal 'foobarbizbaz', @greedy.shortest_common_superstring
-      end
-    end
-  end
-
   describe '#merge_best_overlap_until_no_overlaps_remain' do
     it 'merges overlaps and leaves unmergable reads' do
       semimergable_reads = %w(
@@ -114,6 +96,24 @@ describe Greedy do
 
         @greedy.merge_best_overlap_until_no_overlaps_remain
         assert_equal expected.sort, @greedy.reads.sort
+      end
+    end
+  end
+
+  describe '#shortest_common_superstring' do
+    it 'returns a valid superstring' do
+      superstring = @greedy.shortest_common_superstring
+      assert_equal 'ATTAGACCTGCCGGAATAC', superstring
+    end
+
+    it 'concatenates unmergable reads' do
+      unmergable_reads = %w(
+        foobar
+        bizbaz
+      )
+
+      stub_reads unmergable_reads do
+        assert_equal 'foobarbizbaz', @greedy.shortest_common_superstring
       end
     end
   end
