@@ -4,6 +4,19 @@ require 'minitest/autorun'
 describe Greedy do
   before do
     @greedy = Greedy.new 'sample_data.txt', minimum_overlap: 3
+
+    # maximum overlap is barbaz
+    @mergable_reads = %w(
+      foobarbaz
+      barbazbiz
+      bizbopwam
+    )
+  end
+
+  def stub_reads test_reads
+    @greedy.stub :reads, test_reads do
+      yield
+    end
   end
 
   describe '#reads' do
@@ -47,18 +60,60 @@ describe Greedy do
 
   describe '#find_maximum_overlap' do
     it 'returns the correct reads and the overlap length' do
-      # maximum overlap is barbaz
-      test_reads = %w(
-        foobarbaz
-        barbazbiz
-        bizbopwam
-      )
-
-      @greedy.stub :reads, test_reads do
+      stub_reads @mergable_reads do
         left, right, best_overlap = @greedy.find_maximum_overlap
         assert_equal 'foobarbaz', left
         assert_equal 'barbazbiz', right
         assert_equal 6, best_overlap
+      end
+    end
+  end
+
+  describe '#merge_best_overlap' do
+    it 'merges the best overlap' do
+      stub_reads @mergable_reads do
+        @greedy.merge_best_overlap
+
+        expected = %w(foobarbazbiz bizbopwam)
+        assert_equal expected.sort, @greedy.reads.sort
+      end
+    end
+  end
+
+  describe '#shortest_common_superstring' do
+    it 'returns a valid superstring' do
+      superstring = @greedy.shortest_common_superstring
+      assert_equal 'ATTAGACCTGCCGGAATAC', superstring
+    end
+
+    it 'concatenates unmergable reads' do
+      unmergable_reads = %w(
+        foobar
+        bizbaz
+      )
+
+      stub_reads unmergable_reads do
+        assert_equal 'foobarbizbaz', @greedy.shortest_common_superstring
+      end
+    end
+  end
+
+  describe '#merge_best_overlap_until_no_overlaps_remain' do
+    it 'merges overlaps and leaves unmergable reads' do
+      semimergable_reads = %w(
+        foobar
+        barbaz
+        ucantmergedis
+      )
+
+      stub_reads semimergable_reads do
+        expected = %w(
+          foobarbaz
+          ucantmergedis
+        )
+
+        @greedy.merge_best_overlap_until_no_overlaps_remain
+        assert_equal expected.sort, @greedy.reads.sort
       end
     end
   end

@@ -7,6 +7,36 @@ class Greedy
   string = 'foobar'
   overlap_candidate = 'barbaz'
 
+  def shortest_common_superstring
+    merge_best_overlap_until_no_overlaps_remain
+    # concatenate unmerged strings if there are any, return superstring
+    reads.join
+  end
+
+  def merge_best_overlap_until_no_overlaps_remain
+    loop do
+      overlap_length = merge_best_overlap
+      break if overlap_length == 0 || reads.length == 1
+    end
+  end
+
+  def merge_best_overlap
+    left, right, overlap_length = find_maximum_overlap
+    return 0 if overlap_length == 0
+
+    # remove reads we're about to merge
+    reads.delete left
+    reads.delete right
+
+    # don't repeat the overlapping section
+    merged = left + right[overlap_length..-1]
+
+    # append merged string
+    reads.push merged
+
+    overlap_length
+  end
+
   def find_maximum_overlap
     best_overlap = 0
     left, right = nil, nil
@@ -26,7 +56,7 @@ class Greedy
     match_index = 0
     while true
       # search string for the first minimum_overlap length substring of overlap_candidate
-      match_index = string.index overlap_candidate[0..@minimum_overlap], match_index
+      match_index = string.index overlap_candidate[0...@minimum_overlap], match_index
       return nil if !match_index
 
       # check that the overlap_candidate starts with the remaining substring of a from the match index onward
