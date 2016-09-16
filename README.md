@@ -1,11 +1,8 @@
 # chromosome assembly challenge
 
-####[View the challenge text](foo)
 
----
-
+####[View the challenge text](https://github.com/chellberg/greedy/blob/master/problem.md) 
 ## Approach
-
 ### The De Bruijn saga
 
 After reading through the problem, I googled "dna sequence assembly" and spent some time reading about the domain, starting with the [sequence assembly wikipedia article](https://en.wikipedia.org/wiki/Sequence_assembly). I read about the greedy algorithm, which sounded like how I'd naively approach the problem, but I quickly fixated on approaches using a De Bruijn graph because (my thinking at the time):
@@ -26,6 +23,8 @@ I wanted to separate the difficulty of understanding and implementing the algori
 I had a blast and learned a ton - this was my first time implementing a graph of any kind - but after implementing the algorithm, the De Bruijn graph it produced wasn't Eulerian (had no Eulerian path or cycle), which meant that I couldn't (easily/efficiently) assemble the chromosome.
 
 I eventually realized (waaaay late) that this was due to the nature of the dataset. To produce an Eulerian De Bruijn graph, your reads must contain each kmer exactly once; each read in my dataset is guaranteed to consist of at least 50% duplicate kmers. This is why my De Bruijn graph had 100 semibalanced nodes (using basically any k value from 10 to 900) instead of 2 (head and tail).
+
+Even though [my De Bruijn implementation](https://github.com/chellberg/genome) didn't produce a solution to this challenge, it's pretty neat. Check it out if you want.
 
 A few hours ago, I read in a Wikipedia article I am now unable to locate that overlap-based approaches work best when there's a high degree of overlap between reads. E.g. the exact characteristic of my dataset.
 
