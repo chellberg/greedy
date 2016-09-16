@@ -60,4 +60,4 @@ or
 
 `ruby run_with_real_data_and_write_to_file.rb` (writes to `output.txt`)
 
-I also committed [the solution output] if you don't feel like running my code locally.
+I also committed [the solution output](https://github.com/chellberg/greedy/blob/master/assembled_chromosome.txt) if you don't feel like running my code locally.
